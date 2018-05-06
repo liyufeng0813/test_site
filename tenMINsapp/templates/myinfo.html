@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="{% static 'css/semantic.css' %}" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="{% static 'css/myinfo.css' %}" media="screen" title="no title">
+        <link href="https://fonts.googleapis.com/css?family=Oswald|Raleway" rel="stylesheet">
+
+    </head>
+    <body>
+        <div class="ui inverted top fixed menu borderless red menu">
+            <div class="header item">
+                <div class="ui image">
+                    <a href="{% url 'index' %}">
+                        <img src="{% static 'images/tenlogo.png' %}" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <div class="right menu">
+
+                <div class="item">
+                    <a href="{% url 'myinfo' %}">
+                        <h5 class="ui inverted header">
+                            <div class="ui mini circular image">
+                                {% if request.user.profile.profile_image %}
+                                    <img src="/upload/{{ request.user.profile.profile_image }}" alt="" style="width:32px; height:32px;">
+                                {% else %}
+                                    <img src="{% static 'images/default.png' %}" alt="" style="width:32px; height:32px;">
+                                {% endif %}
+                            </div>
+
+                            <span>{{ request.user.username }}</span>
+                        </h5>
+                    </a>
+                </div>
+                <div class="item">
+
+                    <a href="{% url 'index' %}" class="ui inverted circular button">Logout</a>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="ui  raised container segments">
+            <div class="ui head basic segment" style="background-image: url({% static 'images/bg.png' %});">
+                <div class="ui circular image cover">
+                    {% if request.user.profile.profile_image %}
+                        <img src="/upload/{{ request.user.profile.profile_image }}" alt="" style="width:100px; height:100px;">
+                    {% else %}
+                        <img src="{% static 'images/default.png' %}" alt="" style="width:100px; height:100px;">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="ui bottom inverted  six item attached menu">
+
+                <a class="active item">
+                    个人资料
+                </a>
+                <a class="item" href="{% url 'mycollection' %}">
+                    我赞过的
+                </a>
+            </div>
+
+            <div class="ui butt segment">
+                <div class="ui basic very padded segment container info">
+                    <form class="ui form"  action="{% url 'myinfo' %}" method="post" enctype="multipart/form-data">
+
+                        <div class="field">
+                            <label>name</label>
+                            <input type="text" name="name" value="{{ request.user.username }}">
+                        </div>
+                        <div class="field">
+                            <lable>sex</lable>
+                            <select name="sex" value="request.user.profile.user_sex">
+                                <option value="保密">保密</option>
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>password</label>
+                            <input type="password" name="password" >
+                        </div>
+                        <div class="field">
+                            <label>image</label>
+                            <input type="file"  name="image" value="">
+                        </div>
+
+                        <!--{% for field in form %}-->
+                            <!--<div class="field">-->
+                                <!--<label>{{ field.label }}</label>-->
+                                <!--{{ field }}-->
+                            <!--</div>-->
+
+                        <!--{% endfor %}-->
+
+                        {% csrf_token %}
+
+                        <button class="ui inverted red right floated button" type="submit">修改资料</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>
+
